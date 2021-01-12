@@ -1,4 +1,4 @@
-variable "region_ec2_ami" {}
+variable "ec2_ami" {}
 variable "subnet_id" {}
 variable "vpc_id" {}
 variable "region" {}

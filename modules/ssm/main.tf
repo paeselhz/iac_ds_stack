@@ -1,3 +1,7 @@
+data "aws_directory_service_directory" "ad_info" {
+  directory_id = var.ad_id
+}
+
 resource "aws_ssm_document" "ad-join-domain" {
   name          = "ad-join-domain"
   document_type = "Command"
@@ -12,8 +16,8 @@ resource "aws_ssm_document" "ad-join-domain" {
           "name"   = "domainJoin",
           "inputs" = {
             "directoryId" : ${var.ad_id},
-            "directoryName" : ${var.ad_name},
-            "dnsIpAddresses" : sort(${var.ad_dns_addresses})
+            "directoryName" : ${data.aws_directory_service_directory.ad_info.name},
+            "dnsIpAddresses" : sort(${data.aws_directory_service_directory.ad_info.dns_ip_addresses})
           }
         }
       ]

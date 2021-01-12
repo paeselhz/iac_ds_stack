@@ -1,7 +1,7 @@
 
 resource "aws_instance" "ds-ec2" {
 
-  ami = var.region_ec2_ami
+  ami = var.ec2_ami
   instance_type = var.ec2_instance_type
 
   availability_zone = "${var.region}a"
