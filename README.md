@@ -29,5 +29,13 @@ be created at the root of the directory. The stack is in it self pretty much
 automated, but some knowledge of Terraform will come in handy.
 
 ```terraform
-//TF CONFIG
+region = "us-east-1"
+instance_type = "t3.medium"
+ebs_size = "20"
+ec2_ami = "ami-0be2609ba883822ec"
+ingress_cidr_blocks = "0.0.0.0/0"
+
+ad_name = "your-ad-address.example.com"
+ad_size = "Small"
+ad_password = "<YOUR_AD_PASSWORD>"
 ```
