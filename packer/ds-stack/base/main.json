@@ -1,0 +1,57 @@
+{
+  "variables": {
+    "aws_region": "{{env `AWS_REGION`}}",
+    "aws_vpc_id": "{{env `AWS_VPC_ID`}}",
+    "aws_sub_id": "{{env `AWS_SUBNET_ID`}}",
+    "base_name": "amazon-linux-2",
+    "out_name": "ds-stack"
+  },
+  "builders": [
+    {
+      "ami_name": "{{user `out_name`}}",
+      "type": "amazon-ebs",
+      "region": "{{user `aws_region`}}",
+      "instance_type": "t3.medium",
+      "ssh_username": "ec2-user",
+      //pesquisar o que é isso
+      "ena_support": true,
+      "sriov_support": true,
+      "vpc_id": "{{user `aws_vpc_id`}}",
+      "subnet_id": "{{user `aws_sub_id`}}",
+//      Create packer-role
+      "iam_instance_profile": "Packer-Role",
+      "launch_block_device_mappings": [
+        {
+          "device_name": "/dev/sda1",
+          "volume_size": 20,
+          "volume_type": "gp2",
+          "delete_on_termination": true
+        }
+      ],
+      "tags": {
+        "OS_TYPE": "Linux",
+        "OS_DISTRIBUTION": "Amazon",
+        "OS_VERSION": "2",
+        "TIMESTAMP": "{{timestamp}}",
+        "Provisioner": "Packer"
+      },
+      "source_ami_filter": {
+        "filters": {
+          "virtualization-type": "hvm",
+          "name": "*-{{user `base_name`}}-*",
+          "root-device-type": "ebs"
+        },
+        "most_recent": true
+      }
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "ansible-local",
+      "playbook_file": "{{template_dir}}/main.yml",
+      "role_paths": [
+        "ansible/roles/an_base"
+      ]
+    }
+  ]
+}

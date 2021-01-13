@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: yes
+  roles:
+    - { role: an_base, tags: ["base"]}
+
+  vars:
+    aws_region: "{{ lookup('env', 'AWS_REGION') }}"
