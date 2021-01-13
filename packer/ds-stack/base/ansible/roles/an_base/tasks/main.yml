@@ -1,0 +1,71 @@
+---
+
+- name: Install epel-release and make
+  yum:
+    name: ['epel-release', 'make']
+
+- name: Install required packages
+  yum:
+    name: [
+      'gcc',
+      'gcc-c++',
+      'gcc-gfortran',
+      'libcurl-devel',
+      'libxml2-devel',
+      'openssl-devel',
+      'openblas-devel',
+      'texlive-devel',
+      'bzip2-devel',
+      'wget',
+      'curl',
+      'devtoolset-7-gcc*',
+      'unixODBC-devel',
+      'initscripts',
+      'systemd'
+    ]
+
+- name: Install R
+  package:
+    name: "https://cdn.rstudio.com/r/centos-7/pkgs/R-{{r_version}}-1-1.x86_64.rpm"
+    state: "present"
+
+- name: Create Symbolic Link for R
+  file:
+    src: "/opt/R/{{r_version}}/bin/R"
+    dest: "/usr/local/bin/R"
+    state: link
+
+- name: Create Symbolic Link for RScripts
+  file:
+    src: "/opt/R/{{r_version}}/bin/Rscript"
+    dest: "/usr/local/bin/Rscript"
+    state: link
+
+- name: Add RStudio Package Manager to RProfile
+  lineinfile:
+    path: "/opt/R/{{r_version}}/lib/R/etc/Rprofile.site"
+    line: "options(repos = c(CRAN='{{ rstudio_pkg_manager }}'), download.file.method = 'libcurl')"
+    insertafter: EOF
+    create: yes
+
+- name: Create RStudio Group
+  group:
+    name: rstudio
+
+- name: Create RStudio default user
+  user:
+    name: rstudio
+    password: rstudio2021
+    groups: rstudio admin append=yes
+
+- name: Create RStudio Server Working Dir
+  file:
+    path: "{{ working_dir }}"
+    state: directory
+    owner: rstudio
+    group: rstudio
+
+- name: Install RStudio Server
+  package:
+    name: "https://download2.rstudio.org/server/centos6/x86_64/rstudio-server-rhel-{{rstudio_version}}-x86_64.rpm"
+    state: "present"

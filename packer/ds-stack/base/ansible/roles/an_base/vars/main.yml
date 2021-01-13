@@ -1,0 +1,5 @@
+---
+r_version: "4.0.3"
+rstudio_version: "1.3.1093"
+working_dir: "/home"
+rstudio_pkg_manager: "https://packagemanager.rstudio.com/all/__linux__/centos7/latest"
