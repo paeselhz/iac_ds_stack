@@ -1,8 +1,8 @@
 ---
 
-- name: Install epel-release and make
+- name: Install make
   yum:
-    name: ['epel-release', 'make']
+    name: 'make'
 
 - name: Install required packages
   yum:

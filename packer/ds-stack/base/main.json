@@ -1,9 +1,9 @@
 {
   "variables": {
     "aws_region": "{{env `AWS_REGION`}}",
-    "aws_vpc_id": "{{env `AWS_VPC_ID`}}",
-    "aws_sub_id": "{{env `AWS_SUBNET_ID`}}",
-    "base_name": "amazon-linux-2",
+    "aws_vpc_id": "vpc-0e02f7bda63c012b0",
+    "aws_sub_id": "subnet-019c3278b317a2d1f",
+    "base_name": "amzn2-ami-hvm-2",
     "out_name": "ds-stack"
   },
   "builders": [
@@ -15,11 +15,8 @@
       "ssh_username": "ec2-user",
       "ena_support": true,
       "sriov_support": true,
-      "vpc_filter": {
-        "filters": {
-          "isDefault": true
-        }
-      },
+      "vpc_id": "{{user `aws_vpc_id`}}",
+      "subnet_id": "{{user `aws_sub_id`}}",
       "launch_block_device_mappings": [
         {
           "device_name": "/dev/sda1",
@@ -38,14 +35,22 @@
       "source_ami_filter": {
         "filters": {
           "virtualization-type": "hvm",
-          "name": "*-{{user `base_name`}}-*",
-          "root-device-type": "ebs"
+          "name": "{{user `base_name`}}*",
+          "root-device-type": "ebs",
+          "architecture": "x86_64"
         },
+        "owners": [
+          "amazon"
+        ],
         "most_recent": true
       }
     }
   ],
   "provisioners": [
+    {
+      "type": "shell",
+      "inline": ["sudo amazon-linux-extras install -y ansible2 epel"]
+    },
     {
       "type": "ansible-local",
       "playbook_file": "{{template_dir}}/main.yml",
