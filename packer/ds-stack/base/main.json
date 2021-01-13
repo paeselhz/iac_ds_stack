@@ -13,13 +13,13 @@
       "region": "{{user `aws_region`}}",
       "instance_type": "t3.medium",
       "ssh_username": "ec2-user",
-      //pesquisar o que é isso
       "ena_support": true,
       "sriov_support": true,
-      "vpc_id": "{{user `aws_vpc_id`}}",
-      "subnet_id": "{{user `aws_sub_id`}}",
-//      Create packer-role
-      "iam_instance_profile": "Packer-Role",
+      "vpc_filter": {
+        "filters": {
+          "isDefault": true
+        }
+      },
       "launch_block_device_mappings": [
         {
           "device_name": "/dev/sda1",
