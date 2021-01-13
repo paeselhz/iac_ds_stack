@@ -24,7 +24,7 @@ module "simpleAD" {
 
 module "ssm" {
   source = "./modules/ssm"
-  ad_id = module.simpleAD
+  ad_id = module.simpleAD.simple_ad_id
   instance_ids = module.ec2.id
 }
 
@@ -36,6 +36,6 @@ module "ec2" {
   ec2_ami = var.ec2_ami
   ec2_iam_instance_profile = module.iam.ec2_instance_profile
   ec2_security_groups = module.security.ec2_sg_id
-  subnet_id = module.network.simple_ad_subnet_ids
+  subnet_id = module.network.simple_ad_subnet_ids[0]
   vpc_id = module.network.simple_ad_vpc_id
 }

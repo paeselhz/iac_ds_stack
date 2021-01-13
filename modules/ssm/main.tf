@@ -8,16 +8,16 @@ resource "aws_ssm_document" "ad-join-domain" {
 
   content = <<DOC
     {
-      "schemaVersion" = "2.2"
-      "description"   = "aws:domainJoin"
-      "mainSteps" = [
+      "schemaVersion": "2.2"
+      "description": "aws:domainJoin"
+      "mainSteps": [
         {
-          "action" = "aws:domainJoin",
-          "name"   = "domainJoin",
-          "inputs" = {
+          "action": "aws:domainJoin",
+          "name": "domainJoin",
+          "inputs": {
             "directoryId" : ${var.ad_id},
             "directoryName" : ${data.aws_directory_service_directory.ad_info.name},
-            "dnsIpAddresses" : sort(${data.aws_directory_service_directory.ad_info.dns_ip_addresses})
+            "dnsIpAddresses" : ""
           }
         }
       ]
