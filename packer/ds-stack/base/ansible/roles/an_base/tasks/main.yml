@@ -48,6 +48,11 @@
   group:
     name: rstudio
 
+- name: Install RStudio Server
+  package:
+    name: "https://download2.rstudio.org/server/centos6/x86_64/rstudio-server-rhel-{{rstudio_version}}-x86_64.rpm"
+    state: "present"
+
 - name: Create RStudio default user
   user:
     name: rstudio
@@ -62,7 +67,8 @@
     owner: rstudio
     group: rstudio
 
-- name: Install RStudio Server
-  package:
-    name: "https://download2.rstudio.org/server/centos6/x86_64/rstudio-server-rhel-{{rstudio_version}}-x86_64.rpm"
-    state: "present"
+
+- name: Reload RStudio Server Service
+  systemd:
+    daemon-reload: yes
+    name: rstudio-server
