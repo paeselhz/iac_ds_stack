@@ -14,14 +14,10 @@
       'libxml2-devel',
       'openssl-devel',
       'openblas-devel',
-      'texlive-devel',
       'bzip2-devel',
       'wget',
       'curl',
-      'devtoolset-7-gcc*',
-      'unixODBC-devel',
-      'initscripts',
-      'systemd'
+      'unixODBC-devel'
     ]
 
 - name: Install R
@@ -56,7 +52,8 @@
   user:
     name: rstudio
     password: rstudio2021
-    groups: rstudio admin append=yes
+    groups: rstudio,adm,wheel
+    append: yes
 
 - name: Create RStudio Server Working Dir
   file:
