@@ -50,7 +50,7 @@
 
 - name: Install RStudio Server
   package:
-    name: "https://download2.rstudio.org/server/centos6/x86_64/rstudio-server-rhel-{{rstudio_version}}-x86_64.rpm"
+    name: "https://download2.rstudio.org/server/centos7/x86_64/rstudio-server-rhel-{{rstudio_version}}-x86_64.rpm"
     state: "present"
 
 - name: Create RStudio default user

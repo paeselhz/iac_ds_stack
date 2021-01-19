@@ -8,7 +8,7 @@
   },
   "builders": [
     {
-      "ami_name": "{{user `out_name`}}",
+      "ami_name": "{{user `out_name`}}-{{timestamp}}",
       "type": "amazon-ebs",
       "region": "{{user `aws_region`}}",
       "instance_type": "t3.medium",
