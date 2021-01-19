@@ -17,14 +17,6 @@
       "sriov_support": true,
       "vpc_id": "{{user `aws_vpc_id`}}",
       "subnet_id": "{{user `aws_sub_id`}}",
-      "launch_block_device_mappings": [
-        {
-          "device_name": "/dev/sda1",
-          "volume_size": 20,
-          "volume_type": "gp2",
-          "delete_on_termination": true
-        }
-      ],
       "tags": {
         "OS_TYPE": "Linux",
         "OS_DISTRIBUTION": "Amazon",
