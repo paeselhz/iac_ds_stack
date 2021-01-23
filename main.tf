@@ -10,22 +10,7 @@ module "network" {
 module "security" {
   source = "./modules/security"
   ingress_cidr_blocks = var.ingress_cidr_blocks
-  vpc_id = module.network.simple_ad_vpc_id
-}
-
-module "simpleAD" {
-  source = "./modules/simpleAD"
-  ad_name = var.ad_name
-  ad_size = var.ad_size
-  password = var.ad_password
-  subnets_list = module.network.simple_ad_subnet_ids
-  vpc_id = module.network.simple_ad_vpc_id
-}
-
-module "ssm" {
-  source = "./modules/ssm"
-  ad_id = module.simpleAD.simple_ad_id
-  instance_ids = module.ec2.id
+  vpc_id = module.network.ec2_vpc_id
 }
 
 module "ec2" {
@@ -36,6 +21,6 @@ module "ec2" {
   ec2_ami = var.ec2_ami
   ec2_iam_instance_profile = module.iam.ec2_instance_profile
   ec2_security_groups = module.security.ec2_sg_id
-  subnet_id = module.network.simple_ad_subnet_ids[0]
-  vpc_id = module.network.simple_ad_vpc_id
+  subnet_id = module.network.ec2_subnet_ids[0]
+  vpc_id = module.network.ec2_vpc_id
 }

@@ -1,29 +1,29 @@
-resource "aws_vpc" "main-simple-ad-vpc" {
+resource "aws_vpc" "main-vpc" {
   cidr_block = "10.0.0.0/16"
 
   tags = {
-    Name = "SimpleAD VPC"
+    Name = "Main EC2 VPC"
   }
 }
 
-resource "aws_subnet" "simple-ad-subnet-a" {
-  vpc_id = aws_vpc.main-simple-ad-vpc.id
+resource "aws_subnet" "simple-subnet-a" {
+  vpc_id = aws_vpc.main-vpc.id
   cidr_block = "10.0.1.0/24"
   availability_zone = "${var.region}a"
 
   tags = {
-    Name = "Simple AD subnet - A"
+    Name = "Main EC2 subnet - A"
   }
 
 }
 
-resource "aws_subnet" "simple-ad-subnet-b" {
-  vpc_id = aws_vpc.main-simple-ad-vpc.id
+resource "aws_subnet" "simple-subnet-b" {
+  vpc_id = aws_vpc.main-vpc.id
   cidr_block = "10.0.2.0/24"
   availability_zone = "${var.region}b"
 
   tags = {
-    Name = "Simple AD subnet - B"
+    Name = "Main EC2 subnet - B"
   }
 
 }
