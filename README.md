@@ -34,8 +34,4 @@ instance_type = "t3.medium"
 ebs_size = "20"
 ec2_ami = "ami-08a9c0596281e6459"
 ingress_cidr_blocks = "0.0.0.0/0"
-
-ad_name = "your-ad-address.example.com"
-ad_size = "Small"
-ad_password = "<YOUR_AD_PASSWORD>"
 ```
