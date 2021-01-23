@@ -10,6 +10,8 @@ resource "aws_instance" "ds-ec2" {
 
   iam_instance_profile = var.ec2_iam_instance_profile
 
+  key_name = var.key_name
+
   root_block_device {
     delete_on_termination = true
     volume_size = var.ec2_ebs_size

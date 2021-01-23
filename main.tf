@@ -23,4 +23,5 @@ module "ec2" {
   ec2_security_groups = module.security.ec2_sg_id
   subnet_id = module.network.ec2_subnet_ids[0]
   vpc_id = module.network.ec2_vpc_id
+  key_name = var.key_name
 }
