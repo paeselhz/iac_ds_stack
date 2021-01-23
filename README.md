@@ -32,7 +32,7 @@ automated, but some knowledge of Terraform will come in handy.
 region = "us-east-1"
 instance_type = "t3.medium"
 ebs_size = "20"
-ec2_ami = "ami-0be2609ba883822ec"
+ec2_ami = "ami-08a9c0596281e6459"
 ingress_cidr_blocks = "0.0.0.0/0"
 
 ad_name = "your-ad-address.example.com"
