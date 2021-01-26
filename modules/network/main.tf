@@ -19,13 +19,28 @@ resource "aws_subnet" "simple-subnet-a" {
 
 }
 
-resource "aws_subnet" "simple-subnet-b" {
+resource "aws_internet_gateway" "ec2-gateway" {
   vpc_id = aws_vpc.main-vpc.id
-  cidr_block = "10.0.2.0/24"
-  availability_zone = "${var.region}b"
 
   tags = {
-    Name = "Main EC2 subnet - B"
+    Name = "EC2 Internet Gateway"
+  }
+}
+
+resource "aws_route_table" "emr-cluster-public-routing-table" {
+  vpc_id = aws_vpc.main-vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.ec2-gateway.id
   }
 
+  tags = {
+    Name = "EC2 Route Table"
+  }
+}
+
+resource "aws_route_table_association" "public-route-association" {
+  subnet_id      = aws_subnet.simple-subnet-a.id
+  route_table_id = aws_route_table.emr-cluster-public-routing-table.id
 }

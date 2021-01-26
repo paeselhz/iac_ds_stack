@@ -21,7 +21,7 @@ module "ec2" {
   ec2_ami = var.ec2_ami
   ec2_iam_instance_profile = module.iam.ec2_instance_profile
   ec2_security_groups = module.security.ec2_sg_id
-  subnet_id = module.network.ec2_subnet_ids[0]
+  subnet_id = module.network.ec2_subnet_id
   vpc_id = module.network.ec2_vpc_id
   key_name = var.key_name
 }
