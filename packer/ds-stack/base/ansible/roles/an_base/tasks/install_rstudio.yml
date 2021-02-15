@@ -1,0 +1,32 @@
+---
+
+- name: Create RStudio Group
+  group:
+    name: rstudio
+    state: present
+
+- name: Install RStudio Server
+  package:
+    name: "https://download2.rstudio.org/server/centos7/x86_64/rstudio-server-rhel-{{rstudio_version}}-x86_64.rpm"
+    state: "present"
+
+# Generate default user password using mkpasswd --method=sha-512
+- name: Create RStudio default user
+  user:
+    name: rstudio
+    password: $6$YCk8MrGZAHwetqw$Wd4t3s13QYAlcSOokE.0rF1Y6O8ZJoWiWhkMANMFXf8XFcizWXtCToyZEehxMBz6GmscjfwnUkYS6wawksL/b1
+    groups: rstudio,adm,wheel
+    append: yes
+    state: present
+
+- name: Create RStudio Server Working Dir
+  file:
+    path: "{{ working_dir }}"
+    state: directory
+    owner: rstudio
+    group: rstudio
+
+- name: Reload RStudio Server Service
+  systemd:
+    daemon-reload: yes
+    name: rstudio-server

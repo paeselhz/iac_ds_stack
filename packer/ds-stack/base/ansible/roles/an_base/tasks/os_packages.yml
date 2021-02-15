@@ -1,0 +1,22 @@
+---
+
+- name: Install make
+  yum:
+    name: 'make'
+
+- name: Install required packages
+  yum:
+    name: [
+      'gcc',
+      'gcc-c++',
+      'gcc-gfortran',
+      'libcurl-devel',
+      'libxml2-devel',
+      'openssl-devel',
+      'openblas-devel',
+      'bzip2-devel',
+      'wget',
+      'curl',
+      'unixODBC-devel',
+      'python3-devel'
+    ]

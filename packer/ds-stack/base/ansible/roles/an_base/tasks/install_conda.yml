@@ -1,0 +1,62 @@
+---
+
+- name: Download Miniconda
+  get_url:
+    url: "{{ conda_version_url }}"
+    dest: /tmp/install-conda.sh
+    mode: 0550
+
+- name: Create conda folder
+  file:
+    path: /opt/anaconda3
+    state: directory
+    owner: ec2-user
+    mode: 755
+    recurse: yes
+
+- name: Run the Conda Installer
+  shell: /tmp/install-conda.sh -b -u -p /opt/anaconda3
+
+- name: Clean the Installer and remove shell script
+  file:
+    state: absent
+    path: /tmp/install-conda.sh
+
+- name: Add conda distribution to path
+  become: True
+  shell: echo 'export PATH=/opt/anaconda3/bin:$PATH' >> /etc/profile
+
+- name: Allow read all permission to conda
+  become: True
+  file:
+    path: /opt/anaconda3
+    mode: +r
+    recurse: yes
+
+- name: Allow all users to run conda
+  become: True
+  file:
+    path: /opt/anaconda3/bin
+    mode: +x
+    recurse: yes
+
+- name: Install JupyterHub
+  command: "/opt/anaconda3/bin/conda install jupyterhub -y"
+
+- name: Install Notebook
+  command: "/opt/anaconda3/bin/conda install notebook -y"
+
+- name: Create Anaconda profile link
+  file:
+    src: "/opt/anaconda3/etc/profile.d/conda.sh"
+    dest: /etc/profile.d/conda.sh
+    owner: root
+    group: root
+    state: link
+
+- name: Enhance default bash profile
+  blockinfile:
+    path: "{{ item }}"
+    block: |
+      conda activate base
+  with_items: [ "/root/.bashrc", "/root/.bash_profile", "/home/ec2-user/.bashrc", "/home/ec2-user/.bash_profile" ]

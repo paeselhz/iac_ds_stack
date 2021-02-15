@@ -1,0 +1,34 @@
+---
+
+- name: Install R
+  package:
+    name: "https://cdn.rstudio.com/r/centos-7/pkgs/R-{{r_version}}-1-1.x86_64.rpm"
+    state: present
+
+- name: Create Symbolic Link for R
+  file:
+    src: "/opt/R/{{r_version}}/bin/R"
+    dest: "/usr/local/bin/R"
+    state: link
+
+- name: Create Symbolic Link for RScripts
+  file:
+    src: "/opt/R/{{r_version}}/bin/Rscript"
+    dest: "/usr/local/bin/Rscript"
+    state: link
+
+- name: Add RStudio Package Manager to RProfile
+  lineinfile:
+    path: "/opt/R/{{r_version}}/lib/R/etc/Rprofile.site"
+    line: "options(repos = c(CRAN='{{ rstudio_pkg_manager }}'), download.file.method = 'libcurl')"
+    insertafter: EOF
+    create: yes
+
+- name: Install R packages
+  shell: /usr/local/bin/R --slave --no-save --no-restore-history -e "install.packages('{{item}}')"
+  with_items:
+    - dplyr
+    - sparklyr
+    - tidyverse
+    - ggplot2
+    - reticulate

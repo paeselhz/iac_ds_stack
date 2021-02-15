@@ -1,0 +1,66 @@
+---
+
+- name: Create Jupyter Group
+  group:
+    name: jupyter
+    state: present
+
+- name: Create Jupyter default user
+  user:
+    name: jupyter
+    password: $6$fAimi2Fw5tL7n$lBzPQ6RJQKib1m4r6iT5qTEwrR6NdPCO8ymnL7cINYYdw.kzbRjAxfjyCIZl6ZSv8PABTYZvEoVZ.J3lUhsSS.
+    state: present
+    append: yes
+    groups: jupyter, adm, wheel
+
+#- name: Create Jupyter Folder
+#   file:
+#        path: /etc/jupyterhub
+#        state: directory
+#        mode: 0755
+#        owner: jupyter
+#        group: jupyter
+#
+#    - name: Check existence of config file
+#      stat:
+#        path: /etc/jupyterhub/jupyterhub_config.py
+#      register: config_exists
+#
+#    - name: Configure Jupyterhub
+#      command:
+#        cmd: /usr/local/bin/jupyterhub --generate-config
+#        chdir: /etc/jupyterhub
+#        creates: /etc/jupyterhub/jupyterhub_config.py
+#
+#    - name: Set jupyterhub Admin Users
+#      lineinfile:
+#        path: "/etc/jupyterhub/jupyterhub_config.py"
+#        line: "c.Authenticator.admin_users = {'jupyter'}"
+#        insertafter: EOF
+#        create: yes
+#
+#    - name: Set jupyterhub Create Users
+#      lineinfile:
+#        path: "/etc/jupyterhub/jupyterhub_config.py"
+#        line: "c.LocalAuthenticator.create_system_users = True"
+#        insertafter: EOF
+#        create: yes
+#
+#    - name: Check existence of init file
+#      stat:
+#        path: /etc/init.d/jupyterhub
+#      register: init_exists
+#
+#    - name: Copy JupyterHub init script
+#      copy:
+#        src: jupyter.init
+#        dest: /etc/init.d/jupyterhub
+#        mode: 755
+#        owner: root
+#        groups: adm, wheel
+#
+#    - name: Start Jupyterhub Service
+#      service:
+#        name: jupyterhub
+#        enabled: yes
+#        state: started

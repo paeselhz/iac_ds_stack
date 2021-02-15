@@ -1,128 +1,16 @@
 ---
 
-- name: Install make
-  yum:
-    name: 'make'
-
-- name: Install required packages
-  yum:
-    name: [
-      'gcc',
-      'gcc-c++',
-      'gcc-gfortran',
-      'libcurl-devel',
-      'libxml2-devel',
-      'openssl-devel',
-      'openblas-devel',
-      'bzip2-devel',
-      'wget',
-      'curl',
-      'unixODBC-devel'
-    ]
+- name: Install OS packages and dependencies
+  include_tasks: 'os_packages.yml'
 
 - name: Install R
-  package:
-    name: "https://cdn.rstudio.com/r/centos-7/pkgs/R-{{r_version}}-1-1.x86_64.rpm"
-    state: "present"
+  include_tasks: 'install_r.yml'
 
-- name: Create Symbolic Link for R
-  file:
-    src: "/opt/R/{{r_version}}/bin/R"
-    dest: "/usr/local/bin/R"
-    state: link
-
-- name: Create Symbolic Link for RScripts
-  file:
-    src: "/opt/R/{{r_version}}/bin/Rscript"
-    dest: "/usr/local/bin/Rscript"
-    state: link
-
-- name: Add RStudio Package Manager to RProfile
-  lineinfile:
-    path: "/opt/R/{{r_version}}/lib/R/etc/Rprofile.site"
-    line: "options(repos = c(CRAN='{{ rstudio_pkg_manager }}'), download.file.method = 'libcurl')"
-    insertafter: EOF
-    create: yes
-
-- name: Install R packages
-  shell: /usr/local/bin/R --slave --no-save --no-restore-history -e "install.packages('{{item}}')"
-  with_items:
-    - dplyr
-    - sparklyr
-    - tidyverse
-    - ggplot2
-    - reticulate
-
-- name: Create RStudio Group
-  group:
-    name: rstudio
-
-- name: Install RStudio Server
-  package:
-    name: "https://download2.rstudio.org/server/centos7/x86_64/rstudio-server-rhel-{{rstudio_version}}-x86_64.rpm"
-    state: "present"
-
-# Generate default user password using mkpasswd --method=sha-512
-- name: Create RStudio default user
-  user:
-    name: rstudio
-    password: $6$YCk8MrGZAHwetqw$Wd4t3s13QYAlcSOokE.0rF1Y6O8ZJoWiWhkMANMFXf8XFcizWXtCToyZEehxMBz6GmscjfwnUkYS6wawksL/b1
-    groups: rstudio,adm,wheel
-    append: yes
-    state: present
-
-- name: Create RStudio Server Working Dir
-  file:
-    path: "{{ working_dir }}"
-    state: directory
-    owner: rstudio
-    group: rstudio
-
-
-- name: Reload RStudio Server Service
-  systemd:
-    daemon-reload: yes
-    name: rstudio-server
+- name: Install RStudio
+  include_tasks: 'install_rstudio.yml'
 
 - name: Install Conda
-  block:
-    - name: Download Miniconda
-      get_url:
-        url: "{{ conda_version_url }}"
-        dest: /tmp/install-conda.sh
-        mode: 0550
+  include_tasks: 'install_conda.yml'
 
-    - name: Create conda folder
-      become: True
-      file:
-        path: /opt/anaconda3
-        state: directory
-        owner: ec2-user
-        mode: 755
-        recurse: yes
-
-    - name: Run the Conda Installer
-      shell: /tmp/install-conda.sh -b -u -p /opt/anaconda3
-
-    - name: Clean the Installer and remove shell script
-      file:
-        state: absent
-        path: /tmp/install-conda.sh
-
-    - name: Add conda distribution to path
-      become: True
-      shell: echo 'export PATH=/opt/anaconda3/bin:$PATH' >> /etc/profile
-
-    - name: Allow read all permission to conda
-      become: True
-      file:
-        path: /opt/anaconda3
-        mode: +r
-        recurse: yes
-
-    - name: Allow all users to run conda
-      become: True
-      file:
-        path: /opt/anaconda3/bin
-        mode: +x
-        recurse: yes
+- name: Configure JupyterHub users and uses
+  include_tasks: 'jupyter_cfg.yml'
