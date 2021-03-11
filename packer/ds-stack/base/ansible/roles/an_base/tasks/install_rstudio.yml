@@ -14,6 +14,7 @@
 - name: Create RStudio default user
   user:
     name: rstudio
+    # pw = rstudio2021
     password: $6$YCk8MrGZAHwetqw$Wd4t3s13QYAlcSOokE.0rF1Y6O8ZJoWiWhkMANMFXf8XFcizWXtCToyZEehxMBz6GmscjfwnUkYS6wawksL/b1
     groups: rstudio,adm,wheel
     append: yes
