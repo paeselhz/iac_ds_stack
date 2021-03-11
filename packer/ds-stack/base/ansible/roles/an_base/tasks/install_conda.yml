@@ -46,6 +46,9 @@
 - name: Install Notebook
   command: "/opt/anaconda3/bin/conda install notebook -y"
 
+- name: Install Sudospawner
+  command: "/opt/anaconda3/bin/conda install -c conda-forge sudospawner -y"
+
 - name: Create Anaconda profile link
   file:
     src: "/opt/anaconda3/etc/profile.d/conda.sh"

@@ -5,10 +5,6 @@
     name: jupyter
     state: present
 
-- name: Installing Jupyterhub Sudo Spawner
-  command:
-    cmd: pip3 install git+https://github.com/jupyter/sudospawner
-
 # Generate default user password using mkpasswd --method=sha-512
 - name: Create Jupyter default user
   user:
@@ -42,6 +38,34 @@
   lineinfile:
     path: "/etc/jupyterhub/jupyterhub_config.py"
     line: "c.LocalAuthenticator.create_system_users = True"
+    insertafter: EOF
+    create: yes
+
+- name: Set jupyterhub base url
+  lineinfile:
+    path: "/etc/jupyterhub/jupyterhub_config.py"
+    line: "c.JupyterHub.bind_url = 'http://0.0.0.0:8000"
+    insertafter: EOF
+    create: yes
+
+- name: Set jupyterhub hub url
+  lineinfile:
+    path: "/etc/jupyterhub/jupyterhub_config.py"
+    line: "c.JupyterHub.hub_bind_url = 'http://127.0.0.1:8081"
+    insertafter: EOF
+    create: yes
+
+- name: Set jupyterhub hub IP
+  lineinfile:
+    path: "/etc/jupyterhub/jupyterhub_config.py"
+    line: "c.JupyterHub.hub_ip = '0.0.0.0"
+    insertafter: EOF
+    create: yes
+
+- name: Set jupyterhub Spawner class
+  lineinfile:
+    path: "/etc/jupyterhub/jupyterhub_config.py"
+    line: "c.JupyterHub.spawner_class = 'sudospawner.SudoSpawner'"
     insertafter: EOF
     create: yes
 
