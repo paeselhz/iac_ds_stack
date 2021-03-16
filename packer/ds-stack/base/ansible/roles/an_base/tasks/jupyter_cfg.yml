@@ -69,6 +69,13 @@
     insertafter: EOF
     create: yes
 
+- name: Change ownership of jupyterhub config file
+  file:
+    path: /etc/jupyterhub/jupyterhub_config.py
+    owner: jupyter
+    group: jupyter
+    mode: '0644'
+
 - name: Copy JupyterHub init script
   copy:
     src: jupyterhub.service
@@ -80,9 +87,6 @@
 - name: Start Jupyterhub Service
   systemd:
     daemon-reload: yes
+    enabled: yes
     name: jupyterhub
     state: started
-#  service:
-#    name: jupyterhub
-#    enabled: yes
-#    state: started

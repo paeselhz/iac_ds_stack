@@ -27,7 +27,7 @@ resource "aws_internet_gateway" "ec2-gateway" {
   }
 }
 
-resource "aws_route_table" "emr-cluster-public-routing-table" {
+resource "aws_route_table" "ec2-public-routing-table" {
   vpc_id = aws_vpc.main-vpc.id
 
   route {
@@ -42,5 +42,5 @@ resource "aws_route_table" "emr-cluster-public-routing-table" {
 
 resource "aws_route_table_association" "public-route-association" {
   subnet_id      = aws_subnet.simple-subnet-a.id
-  route_table_id = aws_route_table.emr-cluster-public-routing-table.id
+  route_table_id = aws_route_table.ec2-public-routing-table.id
 }

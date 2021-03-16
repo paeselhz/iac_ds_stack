@@ -5,6 +5,7 @@ After=syslog.target network-online.target
 [Service]
 Type=simple
 User=jupyter
+Environment="PATH=/opt/anaconda3/bin:/opt/anaconda3/condabin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/jupyter/.local/bin:/home/jupyter/bin"
 ExecStart=/opt/anaconda3/bin/jupyterhub --JupyterHub.spawner_class=sudospawner.SudoSpawner
 WorkingDirectory=/etc/jupyterhub
 Restart=on-failure

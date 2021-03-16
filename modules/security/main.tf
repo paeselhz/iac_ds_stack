@@ -30,6 +30,14 @@ resource "aws_security_group" "ec2_sg" {
     cidr_blocks = [var.ingress_cidr_blocks]
   }
 
+//  JupyterHub Port - Hub
+  ingress {
+    from_port = 8081
+    to_port = 8081
+    protocol = "tcp"
+    cidr_blocks = [var.ingress_cidr_blocks]
+  }
+
   egress {
     from_port = 0
     to_port = 0

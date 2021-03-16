@@ -4,19 +4,15 @@ The main objective of this project is to create a set of tools that allow
 the deployment of Data Science Stacks using Terraform. It comprises the 
 following infrastructure:
 
-* The creation of Packer images with both JupyterLab hosted in **PORT** and
-RStudio Server hosted in **PORT**, the result of this packer images will be
+* The creation of Packer images with both JupyterHub hosted in port **8000** and
+RStudio Server hosted in **8787**, the result of this packer images will be
   an Amazon Machine Image that can be used multiple times in the future.
-  
-* The creation of a Simple AD and SSM (AWS Systems Manager) to emulate the
-scenario of a login in both services using Active Directories, this might 
-  require some modifications to be used by your personal stack.
   
 * Creation of a VPC and necessary subnets to ensure that all the 
   infrastructure required by the stack will be available.
   
 * Finally, when all of that is created, the objective will be to deploy
-both of these services (JupyterLab and RStudio Server) in an EC2 instance.
+both of these services (JupyterHub and RStudio Server) in an EC2 instance.
   
 **Disclaimer:** The full stack is AWS oriented, but the solution might be
 available in other cloud providers. It may incur in costs since the whole
