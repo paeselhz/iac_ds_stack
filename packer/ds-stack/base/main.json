@@ -1,8 +1,8 @@
 {
   "variables": {
     "aws_region": "us-east-1",
-    "aws_vpc_id": "vpc-0e02f7bda63c012b0",
-    "aws_sub_id": "subnet-019c3278b317a2d1f",
+    "aws_vpc_id": "<AWS_VPC_ID>",
+    "aws_sub_id": "<AWS_SUBNET_ID>",
     "base_name": "amzn2-ami-hvm-2",
     "out_name": "ds-stack"
   },
