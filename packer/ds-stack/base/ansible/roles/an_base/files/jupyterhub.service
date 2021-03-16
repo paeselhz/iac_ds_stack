@@ -1,10 +1,15 @@
 [Unit]
 Description=Jupyterhub
+After=syslog.target network-online.target
 
 [Service]
-User=jupyterhub
+Type=simple
+User=jupyter
 ExecStart=/opt/anaconda3/bin/jupyterhub --JupyterHub.spawner_class=sudospawner.SudoSpawner
 WorkingDirectory=/etc/jupyterhub
+Restart=on-failure
+RestartSec=1min
+TimeoutSec=5min
 
 [Install]
 WantedBy=multi-user.target

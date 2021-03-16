@@ -25,7 +25,7 @@
 
 - name: Configure Jupyterhub
   command:
-    cmd: /opt/anaconda3/bin/jupyterhub --generate-config -f /etc/jupyterhub/generate_config.py
+    cmd: /opt/anaconda3/bin/jupyterhub --generate-config -f /etc/jupyterhub/jupyterhub_config.py
 
 - name: Set jupyterhub Admin Users
   lineinfile:
@@ -44,21 +44,21 @@
 - name: Set jupyterhub base url
   lineinfile:
     path: "/etc/jupyterhub/jupyterhub_config.py"
-    line: "c.JupyterHub.bind_url = 'http://0.0.0.0:8000"
+    line: "c.JupyterHub.bind_url = 'http://0.0.0.0:8000'"
     insertafter: EOF
     create: yes
 
 - name: Set jupyterhub hub url
   lineinfile:
     path: "/etc/jupyterhub/jupyterhub_config.py"
-    line: "c.JupyterHub.hub_bind_url = 'http://127.0.0.1:8081"
+    line: "c.JupyterHub.hub_bind_url = 'http://127.0.0.1:8081'"
     insertafter: EOF
     create: yes
 
 - name: Set jupyterhub hub IP
   lineinfile:
     path: "/etc/jupyterhub/jupyterhub_config.py"
-    line: "c.JupyterHub.hub_ip = '0.0.0.0"
+    line: "c.JupyterHub.hub_ip = '0.0.0.0'"
     insertafter: EOF
     create: yes
 
@@ -72,13 +72,17 @@
 - name: Copy JupyterHub init script
   copy:
     src: jupyterhub.service
-    dest: /lib/systemd/system/jupyterhub.service
+    dest: /etc/systemd/system/jupyterhub.service
     mode: 755
     owner: root
     group: wheel
 
 - name: Start Jupyterhub Service
-  service:
+  systemd:
+    daemon-reload: yes
     name: jupyterhub
-    enabled: yes
     state: started
+#  service:
+#    name: jupyterhub
+#    enabled: yes
+#    state: started
